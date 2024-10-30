@@ -7,7 +7,6 @@ import java.time.LocalDateTime
 @Table(name = "notifications")
 data class Notification(
     @Id
-    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
@@ -17,5 +16,14 @@ data class Notification(
     @Enumerated(EnumType.STRING)
     val type: NotificationType,
 
-    val sendDate: LocalDateTime
+    val sendDate: LocalDateTime,
+
+    @ManyToOne
+    @JoinColumn(name = "task_id", nullable = false)
+    val task: Task
 )
+/* Definir una caducidad o eliminación periódica:
+    Para no acumular notificaciones innecesarias,
+    se puede implementar un sistema que borre las antiguas
+    o irrelevantes pasado un tiempo.
+ */

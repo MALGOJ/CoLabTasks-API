@@ -17,8 +17,8 @@ data class User(
     val name: String,
 
     @Column(nullable = false)
-    val createDate:LocalDate,
+    val createDate: LocalDate,
 
-
-
+    @ManyToMany(mappedBy = "users")
+    val proyects: List<Proyect> = mutableListOf()
 )

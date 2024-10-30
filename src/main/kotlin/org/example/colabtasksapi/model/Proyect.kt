@@ -8,7 +8,6 @@ import java.time.LocalDateTime
 data class Proyect(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     val id: Long,
 
     @Column(nullable = false)
@@ -25,4 +24,19 @@ data class Proyect(
 
     @Column(nullable = false)
     val createdDate: LocalDateTime,
+
+    //Un proyecto puede tener muchas tareas asociadas a él. B
+    @OneToMany(mappedBy = "proyect", cascade = [CascadeType.ALL])
+    val tasks: List<Task> = mutableListOf(),
+
+    //Un proyecto puede tener muchos usuarios asociados a él B
+    @ManyToMany
+    //tabla intermedia que se crea para la relación muchos a muchos
+    @JoinTable(
+        name = "user_proyect",
+        joinColumns = [JoinColumn(name = "proyect_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_email")]
+    )
+    val users: List<User> = mutableListOf()
 )
+

@@ -15,10 +15,13 @@ data class Reminder(
     val frequency: ReminderFrequency,
 
     val startDate: LocalDateTime,
-
     val endDate: LocalDateTime,
 
     @ManyToOne
-    @JoinColumn(name = "email")
-    val user: User,
-)
+    @JoinColumn(name = "task_id", nullable = false)
+    val task: Task,
+
+    @ManyToOne
+    @JoinColumn(name = "user_email", nullable = false)
+    val user: User
+    )

@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 @Table(name = "reminders")
 data class Reminder(
     @Id
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 

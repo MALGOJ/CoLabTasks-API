@@ -19,6 +19,12 @@ data class User(
     @Column(nullable = false)
     val createDate: LocalDate,
 
+    @Column(nullable = false)
+    val locked: Boolean = false,
+
+    @Column(nullable = false)
+    val disabled: Boolean = false,
+
     @ManyToMany(mappedBy = "users")
     val proyects: List<Proyect> = mutableListOf()
 )

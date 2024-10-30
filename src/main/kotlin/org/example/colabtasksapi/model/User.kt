@@ -17,5 +17,8 @@ data class User(
     val name: String,
 
     @Column(nullable = false)
-    val createDate:LocalDate
+    val createDate:LocalDate,
+
+
+
 )

@@ -17,4 +17,8 @@ data class Reminder(
     val startDate: LocalDateTime,
 
     val endDate: LocalDateTime,
+
+    @ManyToOne
+    @JoinColumn(name = "email")
+    val user: User,
 )

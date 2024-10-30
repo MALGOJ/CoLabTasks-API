@@ -11,12 +11,13 @@ class SecurityConfig {
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.csrf { csrf -> csrf.disable() }
-            .cors {  }
+            .cors { }
             .sessionManagement { sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authorizeHttpRequests { authz ->
                 authz
+                    .requestMatchers("/login", "/signup").permitAll()
                     .anyRequest().authenticated()
             }
 

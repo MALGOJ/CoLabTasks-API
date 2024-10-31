@@ -25,7 +25,7 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { authz ->
                 authz
-                    .requestMatchers("/api/auth/**", "/signup").permitAll()
+                    .requestMatchers("/api/auth/**", "/api/signup/**").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)

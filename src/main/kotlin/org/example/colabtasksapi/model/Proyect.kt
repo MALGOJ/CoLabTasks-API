@@ -23,7 +23,7 @@ data class Proyect(
     val endDate: LocalDateTime,
 
     @Column(nullable = false)
-    val createdDate: LocalDateTime,
+    var createdDate: LocalDateTime,
 
     //Un proyecto puede tener muchas tareas asociadas a él. B
     @OneToMany(mappedBy = "proyect", cascade = [CascadeType.ALL])

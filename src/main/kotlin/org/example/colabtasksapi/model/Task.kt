@@ -8,31 +8,31 @@ import java.time.LocalDateTime
 data class Task(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    var id: Long,
 
     @Column(nullable = false)
-    val title: String,
+    var title: String,
 
     @Column(nullable = false)
-    val description: String,
+    var description: String,
 
     @Enumerated(EnumType.STRING)
-    val status: TaskStatus,
+    var status: TaskStatus,
 
     @Enumerated(EnumType.STRING)
-    val priority: TaskPriority,
+    var priority: TaskPriority,
 
-    val dueDate: LocalDateTime,
-    val createdDate: LocalDateTime,
-    val updatedDate: LocalDateTime,
+    var dueDate: LocalDateTime,
+    var createdDate: LocalDateTime,
+    var updatedDate: LocalDateTime? = null,
 
     //Muchas tareas pueden estar asociadas a un único proyecto B
     @ManyToOne
-    @JoinColumn(name = "proyect_id", nullable = false)
-    val proyect: Proyect,
+    @JoinColumn(name = "proyect_id")
+    var proyect: Proyect? = null,
 
     //Muchas tareas pueden estar asignadas a un único usuario B
     @ManyToOne
     @JoinColumn(name = "user_email")
-    val assignedUser: User? = null,
+    var assignedUser: User? = null,
 )

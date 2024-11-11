@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param
 interface TaskRepository : CrudRepository<Task, Long> {
     fun findByTitle(title: String): List<Task>
 
-    @Query("SELECT t FROM Task t WHERE t.assignedUser.email = :email")
+    @Query("SELECT t FROM Task t WHERE t.assignedUser.email = :email ORDER BY t.createdDate DESC")
     fun findAllByUserEmail(@Param("email") email: String): List<Task>
 }

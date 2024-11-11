@@ -23,9 +23,6 @@ class TaskService(
     @Transactional(readOnly = true)
     fun getAllTasksByUser(email: String): List<TaskResponseDTO> {
         val tasks = taskRepository.findAllByUserEmail(email)
-        if (tasks.isEmpty()) {
-            throw NullPointerException("No hay tareas definidas")
-        }
         return tasks.map { taskMapper.toTaskResponseDTO(it) }
     }
 

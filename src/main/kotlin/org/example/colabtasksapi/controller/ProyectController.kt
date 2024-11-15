@@ -1,3 +1,4 @@
+
 package org.example.colabtasksapi.controller
 
 import org.example.colabtasksapi.dto.ProyectDTO
@@ -8,24 +9,25 @@ import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/proyects")
+@RequestMapping("/api/projects")
 class ProyectController(private val proyectService: ProyectService) {
 
     @GetMapping
-    fun getAllProyects(authentication: Authentication): ResponseEntity<*> {
+    fun getAllProjectsByUser(authentication: Authentication): ResponseEntity<*> {
         return if (authentication.isAuthenticated) {
-            val proyects = proyectService.getAllProyects()
-            ResponseEntity.ok(proyects)
+            val email = authentication.name
+            val projects = proyectService.getAllProjectsByUser(email)
+            ResponseEntity.ok(projects)
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized")
         }
     }
 
-    @GetMapping("/{id}")
-    fun getProyectById(authentication: Authentication, @PathVariable id: Long): ResponseEntity<*> {
+    @GetMapping("/getProjectById/{id}")
+    fun getProjectById(authentication: Authentication, @PathVariable id: Long): ResponseEntity<*> {
         return if (authentication.isAuthenticated) {
             try {
-                val proyect = proyectService.getProyectById(id)
+                val proyect = proyectService.getProjectById(id)
                 ResponseEntity.ok(proyect)
             } catch (e: NullPointerException) {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
@@ -35,22 +37,23 @@ class ProyectController(private val proyectService: ProyectService) {
         }
     }
 
-    @PostMapping
+    @PostMapping("/saveProject")
     fun createProyect(authentication: Authentication, @RequestBody proyectDTO: ProyectDTO): ResponseEntity<*> {
         return if (authentication.isAuthenticated) {
-            val createdProyect = proyectService.createProyect(proyectDTO)
+            val userEmail = authentication.name
+            val createdProyect = proyectService.createProject(proyectDTO, userEmail)
             ResponseEntity.status(HttpStatus.CREATED).body(createdProyect)
         } else {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized")
         }
     }
 
-    @PutMapping("/{id}")
-    fun updateProyect(authentication: Authentication, @PathVariable id: Long, @RequestBody proyectDTO: ProyectDTO): ResponseEntity<*> {
+    @PutMapping("/updateProject/{id}")
+    fun updateProject(authentication: Authentication, @PathVariable id: Long, @RequestBody proyectDTO: ProyectDTO): ResponseEntity<*> {
         return if (authentication.isAuthenticated) {
             try {
-                val updatedProyect = proyectService.updateProyect(id, proyectDTO)
-                ResponseEntity.ok(updatedProyect)
+                val updatedProject = proyectService.updateProject(id, proyectDTO)
+                ResponseEntity.ok(updatedProject)
             } catch (e: RuntimeException) {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
             }
@@ -59,11 +62,11 @@ class ProyectController(private val proyectService: ProyectService) {
         }
     }
 
-    @DeleteMapping("/{id}")
-    fun deleteProyect(authentication: Authentication, @PathVariable id: Long): ResponseEntity<*> {
+    @DeleteMapping("/deleteProject/{id}")
+    fun deleteProject(authentication: Authentication, @PathVariable id: Long): ResponseEntity<*> {
         return if (authentication.isAuthenticated) {
             try {
-                proyectService.deleteProyect(id)
+                proyectService.deleteProject(id)
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build()
             } catch (e: RuntimeException) {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)

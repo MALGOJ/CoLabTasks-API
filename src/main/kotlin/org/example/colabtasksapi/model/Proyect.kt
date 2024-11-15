@@ -11,23 +11,23 @@ data class Proyect(
     val id: Long,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
-    val description: String,
+    var description: String,
 
     @Column(nullable = false)
-    val startDate: LocalDateTime,
+    var startDate: LocalDateTime,
 
     @Column(nullable = false)
-    val endDate: LocalDateTime,
+    var endDate: LocalDateTime,
 
     @Column(nullable = false)
     var createdDate: LocalDateTime,
 
     //Un proyecto puede tener muchas tareas asociadas a él. B
     @OneToMany(mappedBy = "proyect", cascade = [CascadeType.ALL])
-    val tasks: List<Task> = mutableListOf(),
+    var tasks: MutableList<Task> = mutableListOf(),
 
     //Un proyecto puede tener muchos usuarios asociados a él B
     @ManyToMany
@@ -37,6 +37,6 @@ data class Proyect(
         joinColumns = [JoinColumn(name = "proyect_id")],
         inverseJoinColumns = [JoinColumn(name = "user_email")]
     )
-    val users: List<User> = mutableListOf()
+    var users: MutableList<User> = mutableListOf()
 )
 

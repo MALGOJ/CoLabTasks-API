@@ -1,6 +1,7 @@
 package org.example.colabtasksapi.mappers
 
 import org.example.colabtasksapi.dto.UserDTO
+import org.example.colabtasksapi.dto.UserEmailDto
 import org.example.colabtasksapi.model.User
 import org.mapstruct.*
 
@@ -19,6 +20,12 @@ interface UserMapper {
     fun toUserDTO(user: User): UserDTO
 
     fun toUserDTOList(users: List<User>): List<UserDTO>
+
+    @Mapping(source = "email", target = "email")
+    fun toUserEmailDto(user: User): UserEmailDto
+
+    @InheritInverseConfiguration
+    fun toUserEmail(userEmailDTO: UserEmailDto): User
 
     @InheritInverseConfiguration
     fun toUser(userDTO: UserDTO): User

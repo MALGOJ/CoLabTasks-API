@@ -11,3 +11,7 @@ data class UserDTO(
     val disabledDto: Boolean,
     val proyectsDto: List<ProyectDTO> = mutableListOf()
 )
+
+data class UserEmailDto(
+    val email: String
+)

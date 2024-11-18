@@ -9,12 +9,25 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
+/**
+ * Filter that processes JWT authentication for incoming HTTP requests.
+ *
+ * @property jwtUtil Utility class for handling JWT operations.
+ * @property userDetailsService Service for loading user-specific data.
+ */
 @Component
 class JwtFilter(
     private val jwtUtil: JwtUtil,
     private val userDetailsService: UserDetailsService
 ) : OncePerRequestFilter() {
 
+    /**
+     * Filters each request to check for a valid JWT token and sets the authentication context.
+     *
+     * @param request The HTTP request.
+     * @param response The HTTP response.
+     * @param filterChain The filter chain.
+     */
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val requestURI = request.requestURI
         if (requestURI == "/api/auth" || requestURI == "/signup") {

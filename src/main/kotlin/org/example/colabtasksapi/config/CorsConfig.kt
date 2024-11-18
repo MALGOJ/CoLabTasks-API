@@ -6,8 +6,17 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
+/**
+ * Configuration class for setting up CORS (Cross-Origin Resource Sharing) settings.
+ */
 @Configuration
 class CorsConfig {
+
+    /**
+     * Creates and configures a CORS configuration source.
+     *
+     * @return The configured CORS configuration source.
+     */
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val corsConfiguration = CorsConfiguration()

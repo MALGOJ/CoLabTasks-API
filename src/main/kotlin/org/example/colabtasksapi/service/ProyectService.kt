@@ -12,6 +12,15 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
+/**
+ * Service class for managing projects.
+ *
+ * @property proyectRepository Repository for project data.
+ * @property proyectMapper Mapper for converting between project entities and DTOs.
+ * @property userRepository Repository for user data.
+ * @property taskMapper Mapper for converting between task entities and DTOs.
+ * @property userMapper Mapper for converting between user entities and DTOs.
+ */
 @Service
 class ProyectService(
     private val proyectRepository: ProyectRepository,
@@ -21,6 +30,13 @@ class ProyectService(
     private val userMapper: UserMapper
 ) {
 
+    /**
+     * Retrieves all projects associated with a specific user.
+     *
+     * @param email The email of the user.
+     * @return A list of ProjectResponseDTO objects representing the user's projects.
+     * @throws NullPointerException if no projects are found.
+     */
     @Transactional(readOnly = true)
     fun getAllProjectsByUser(email: String): List<ProjectResponseDTO> {
         println("el email es: $email")
@@ -31,23 +47,45 @@ class ProyectService(
         return proyects.map { proyectMapper.toProjectResponseDTO(it) }
     }
 
+    /**
+     * Retrieves a project by its ID.
+     *
+     * @param id The ID of the project.
+     * @return A ProyectDTO object representing the project.
+     * @throws NullPointerException if the project is not found.
+     */
     @Transactional(readOnly = true)
     fun getProjectById(id: Long): ProyectDTO {
         val project = proyectRepository.findById(id).orElseThrow { NullPointerException("Project not found") }
         return proyectMapper.toProyectDTO(project)
     }
 
+    /**
+     * Creates a new project.
+     *
+     * @param proyectDTO The data transfer object containing project details.
+     * @param userEmail The email of the user creating the project.
+     * @throws RuntimeException if the user is not found.
+     */
     @Transactional
     fun createProject(proyectDTO: ProyectDTO, userEmail: String) {
-        val user = userRepository.findByEmail(userEmail) ?: throw RuntimeException("User not found") //Busdca el usuario por email en la base de datos
-        val proyect = proyectMapper.toProyect(proyectDTO).apply { //Mapea el DTO a la entidad Proyect
+        val user = userRepository.findByEmail(userEmail) ?: throw RuntimeException("User not found")
+        val proyect = proyectMapper.toProyect(proyectDTO).apply {
             if (users.isEmpty()) {
-                users = mutableListOf(user) // Si la lista de usuarios es nula o vacía, se asigna el usuario actual
+                users = mutableListOf(user)
             }
         }
-        proyectRepository.save(proyect) //Guarda el proyecto en la base de datos
+        proyectRepository.save(proyect)
     }
 
+    /**
+     * Updates an existing project.
+     *
+     * @param id The ID of the project to be updated.
+     * @param updatedProyectDTO The data transfer object containing updated project details.
+     * @return A ProjectResponseDTO object representing the updated project.
+     * @throws RuntimeException if the project is not found.
+     */
     @Transactional
     fun updateProject(id: Long, updatedProyectDTO: ProyectDTO): ProjectResponseDTO {
         val existingProyect = proyectRepository.findById(id).orElseThrow { RuntimeException("Proyect not found") }
@@ -65,6 +103,12 @@ class ProyectService(
         return proyectMapper.toProjectResponseDTO(savedProyect)
     }
 
+    /**
+     * Deletes a project by its ID.
+     *
+     * @param id The ID of the project to be deleted.
+     * @throws RuntimeException if the project is not found.
+     */
     @Transactional
     fun deleteProject(id: Long) {
         if (!proyectRepository.existsById(id)) {

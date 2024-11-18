@@ -12,10 +12,22 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
+/**
+ * Configuration class for setting up security configurations including JWT filters.
+ *
+ * @property jwtFilter The JWT filter to be used for authentication.
+ */
 @Configuration
 class SecurityConfig(
     private val jwtFilter: JwtFilter
 ) {
+
+    /**
+     * Configures the security filter chain.
+     *
+     * @param httpSecurity The HttpSecurity object to configure.
+     * @return The configured SecurityFilterChain.
+     */
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity.csrf { csrf -> csrf.disable() }
@@ -35,11 +47,22 @@ class SecurityConfig(
         return httpSecurity.build()
     }
 
+    /**
+     * Provides the authentication manager bean.
+     *
+     * @param authenticationConfiguration The authentication configuration.
+     * @return The AuthenticationManager bean.
+     */
     @Bean
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
         return authenticationConfiguration.authenticationManager
     }
 
+    /**
+     * Provides the password encoder bean.
+     *
+     * @return The PasswordEncoder bean.
+     */
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()

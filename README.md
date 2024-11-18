@@ -26,7 +26,7 @@ La API permite a los usuarios:
 - Lenguajes**: Kotlin, Java
 - Marcos de trabajo**: Spring Boot
 - Herramienta de construcción**: Gradle
-- Base de datos**: H2 (para pruebas), PostgreSQL (para producción)
+- Base de datos**: PostgreSQL (para producción)
 - Pruebas**: JUnit 5, Mockito
 
 ## Descripción del Backend

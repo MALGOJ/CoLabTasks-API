@@ -64,4 +64,14 @@ Las pruebas unitarias se escriben utilizando JUnit 5 y Mockito. Las pruebas cubr
 6.Búsquedas avanzadas
 7.Soporte para archivos adjuntos
 
-## Porcentaje de IA utilizado en el proyecto 50%
+# Docker 
+
+# Image download docker hub link o buil whit the comand
+
+docker build -t kotlin-springboot:dev .
+
+docker-compose up -d
+
+# Execution container dev in bash terminal
+
+docker run -d -p 8080:8080 -v $(pwd):/app --name kotlin-springboot-dev kotlin-springboot:dev

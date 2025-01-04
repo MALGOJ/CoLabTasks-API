@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ../CoLabTasks-WebApp # Ruta al contexto de construcción del Dockerfile
+      dockerfile: ./.devcontainer/Dockerfile # Ruta al Dockerfile específico para el frontend
+    image: angular19:latest
+    container_name: coLabtaskAngularV19 # Nombre del contenedor para el servicio frontend
+    working_dir: /app/CoLabTask # Directorio de trabajo dentro del contenedor
+    volumes:
+      - ../CoLabTasks-WebApp/CoLabTask:/app/CoLabTask # Monta el directorio del proyecto en el contenedor
+    ports:
+      - "4300:4300" # Mapea el puerto 4200 del contenedor al puerto 4200 del host
+    #command: sleep infinity # Comando para mantener el contenedor en ejecución  
+    command: >
+     sh -c "cd /app/CoLabTask && ng serve" 
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Configuración para usar polling en lugar de eventos de archivos
+    depends_on:
+      - backend # Este servicio depende del servicio backend
+
+  backend:
+    build:
+      context: . # Ruta al contexto de construcción del Dockerfile
+      dockerfile: ./.devcontainer/Dockerfile # Ruta al Dockerfile específico para el backend
+    image: springboot-backend
+    container_name: coLabTaskSpring-backend # Nombre del contenedor para el servicio backend
+    ports:
+      - "8080:8080" # Mapea el puerto 8080 del contenedor al puerto 8080 del host
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/CoLabTasksDB # URL de la base de datos
+      SPRING_DATASOURCE_USERNAME: CoLabTaskuser # Nombre de usuario de la base de datos
+      SPRING_DATASOURCE_PASSWORD: hgk9Fcb6He4XV2W+/98u&$3 # Contraseña de la base de datos
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update # Configuración de Hibernate para actualizar el esquema de la base de datos
+    volumes:
+      - backend-data:/var/lib/backend # Define el volumen para el backend
+    depends_on:
+      - db # Este servicio depende del servicio db
+
+  db:
+    image: postgres:15 # Imagen de Docker para PostgreSQL
+    container_name: postgres-dbCoLabTask # Nombre del contenedor para el servicio de base de datos
+    ports:
+      - "5432:5432" # Mapea el puerto 5432 del contenedor al puerto 5432 del host
+    environment:
+      POSTGRES_USER: CoLabTaskuser # Nombre de usuario de la base de datos
+      POSTGRES_PASSWORD: hgk9Fcb6He4XV2W+/98u&$3 # Contraseña de la base de datos
+      POSTGRES_DB: CoLabTasksDB # Nombre de la base de datos
+    volumes:
+      - db-data:/var/lib/postgresql/data # Volumen para persistir los datos de la base de datos
+
+volumes:
+  db-data: # Define el volumen para la base de datos
+  backend-data: # Define el volumen para el backend
+  frontend-node-modules: # Define el volumen para node_modules del frontend

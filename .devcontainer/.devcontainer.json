@@ -1,0 +1,25 @@
+{
+  "name": "Kotlin Spring Dev",
+  "dockerFile": "./Dockerfile",
+  "appPort": [8080],
+  "customizations": {
+      "vscode": {
+          "extensions": [
+              "fwcd.kotlin",          // Soporte para Kotlin
+              "vscjava.vscode-spring-boot",       // Soporte para Spring Boot
+              "vscjava.vscode-gradle",            // Gradle para Java 
+              "naco-siren.gradle-language",       // Soporte para Gradle Scripts 
+              "redhat.java",                      // Soporte general para Java
+              "vscjava.vscode-java-debug"         // Depuración de Java
+          ],
+          "settings": {
+              "editor.formatOnSave": true,        // Formateo automático al guardar
+              "java.home": "/usr/lib/jvm/java-17-openjdk-amd64", // Ruta de Java (asegúrate de ajustarla si usas otra versión)
+              "kotlin.languageServer": {
+                  "enabled": true                // Habilitar el servidor de lenguaje Kotlin
+              }
+          }
+      }
+  },
+  "postCreateCommand": "./gradlew dependencies" // Descarga las dependencias al iniciar el contenedor
+}
